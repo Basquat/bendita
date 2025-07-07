@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bendita Trufa</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div id="steam-bg"></div>
+  <header>
+    <div class="logo">Bendita<span>Trufa</span></div>
+    <nav>
+      <ul>
+        <li class="tab active" data-tab="dashboard">Painel</li>
+        <li class="tab" data-tab="add">Adicionar Item</li>
+        <li class="tab" data-tab="edit">Editar Item</li>
+        <li class="tab" data-tab="owners">Gerenciar Usuários</li>
+        <li class="tab" data-tab="history">Histórico</li>
+      </ul>
+    </nav>
+  </header>
+  <main>
+    <section id="dashboard" class="tab-content active">
+      <h1>Itens com Estoque Baixo</h1>
+      <div id="low-stock-list" class="item-list"></div>
+    </section>
+    <section id="add" class="tab-content">
+      <h1>Adicionar Novo Item</h1>
+      <form id="add-item-form">
+        <input type="text" placeholder="Nome do Item" name="name" required>
+        <input type="number" placeholder="Quantidade" name="quantity" min="1" required>
+        <input type="text" placeholder="Categoria" name="category" required>
+        <button type="submit">Adicionar</button>
+      </form>
+    </section>
+    <section id="edit" class="tab-content">
+      <h1>Editar Itens</h1>
+      <div id="edit-list" class="item-list"></div>
+    </section>
+    <section id="owners" class="tab-content">
+      <h1>Gerenciamento de Usuários</h1>
+      <div id="owners-content"></div>
+    </section>
+    <section id="history" class="tab-content">
+      <h1>Histórico de Alterações</h1>
+      <div id="history-list" class="item-list"></div>
+    </section>
+  </main>
+  <div id="modal-bg" class="hidden">
+    <div id="modal">
+      <span id="modal-close">&times;</span>
+      <div id="modal-content"></div>
+    </div>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>

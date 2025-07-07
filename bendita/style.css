@@ -1,0 +1,534 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+
+body {
+  margin: 0;
+  font-family: 'Montserrat', Arial, sans-serif;
+  background: #171a21;
+  color: #c7d5e0;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+#steam-bg {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(120deg, #23272e 0%, #1b2838 100%);
+  z-index: -2;
+  animation: bgMove 20s linear infinite alternate;
+}
+
+@keyframes bgMove {
+  0% { filter: blur(0px) brightness(1); }
+  100% { filter: blur(2px) brightness(1.1); }
+}
+
+header {
+  background: rgba(29, 40, 58, 0.95);
+  box-shadow: 0 2px 12px #000a;
+  padding: 0 32px;
+  display: flex;
+  align-items: center;
+  height: 72px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.logo {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #66c0f4;
+  letter-spacing: 2px;
+  margin-right: 48px;
+  text-shadow: 0 2px 8px #0008;
+}
+.logo span {
+  color: #fff;
+  font-weight: 400;
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 32px;
+  margin: 0;
+  padding: 0;
+}
+nav li {
+  cursor: pointer;
+  font-size: 1.1rem;
+  padding: 8px 20px;
+  border-radius: 8px 8px 0 0;
+  transition: background 0.3s, color 0.3s;
+  color: #c7d5e0;
+  position: relative;
+}
+nav li.active, nav li:hover {
+  background: #1b2838;
+  color: #66c0f4;
+  box-shadow: 0 4px 16px #0004;
+}
+
+main {
+  max-width: 900px;
+  margin: 40px auto 0 auto;
+  background: rgba(23, 26, 33, 0.98);
+  border-radius: 18px;
+  box-shadow: 0 8px 32px #000a;
+  padding: 36px 32px 48px 32px;
+  min-height: 500px;
+  animation: fadeIn 1s;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(40px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+h1 {
+  color: #66c0f4;
+  font-size: 2rem;
+  margin-bottom: 24px;
+  letter-spacing: 1px;
+}
+
+.tab-content {
+  display: none;
+  animation: fadeIn 0.7s;
+}
+.tab-content.active {
+  display: block;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  max-width: 400px;
+}
+form input {
+  padding: 12px;
+  border-radius: 6px;
+  border: none;
+  background: #23272e;
+  color: #c7d5e0;
+  font-size: 1rem;
+  outline: none;
+  transition: box-shadow 0.2s;
+}
+form input:focus {
+  box-shadow: 0 0 0 2px #66c0f4;
+}
+form button {
+  background: linear-gradient(90deg, #66c0f4 0%, #1b2838 100%);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 12px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s;
+  box-shadow: 0 2px 8px #0006;
+}
+form button:hover {
+  background: linear-gradient(90deg, #1b2838 0%, #66c0f4 100%);
+  transform: translateY(-2px) scale(1.03);
+}
+
+.item-list {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+.item-card {
+  background: #23272e;
+  border-radius: 10px;
+  padding: 18px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 2px 12px #0005;
+  transition: transform 0.2s, box-shadow 0.2s;
+  animation: fadeIn 0.7s;
+}
+.item-card.low {
+  border-left: 6px solid #e74c3c;
+  background: #2d1b1b;
+}
+.item-card:hover {
+  transform: scale(1.02);
+  box-shadow: 0 6px 24px #0008;
+}
+.item-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.item-name {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #fff;
+}
+.item-category {
+  font-size: 0.95rem;
+  color: #66c0f4;
+}
+.item-quantity {
+  font-size: 1.1rem;
+  color: #e67e22;
+  font-weight: 700;
+}
+.edit-btn, .delete-btn {
+  background: #66c0f4;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 14px;
+  font-size: 1rem;
+  margin-left: 10px;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+}
+.edit-btn:hover {
+  background: #2980b9;
+  transform: scale(1.08);
+}
+.delete-btn {
+  background: #e74c3c;
+}
+.delete-btn:hover {
+  background: #c0392b;
+  transform: scale(1.08);
+}
+
+#modal-bg {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(23, 26, 33, 0.85);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.3s;
+}
+#modal-bg.hidden {
+  display: none;
+}
+#modal {
+  background: #23272e;
+  border-radius: 12px;
+  padding: 32px 36px;
+  min-width: 320px;
+  box-shadow: 0 8px 32px #000a;
+  position: relative;
+  animation: fadeIn 0.5s;
+}
+#modal-close {
+  position: absolute;
+  top: 12px;
+  right: 18px;
+  font-size: 2rem;
+  color: #66c0f4;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+#modal-close:hover {
+  color: #e74c3c;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  background: #23272e;
+}
+::-webkit-scrollbar-thumb {
+  background: #1b2838;
+  border-radius: 6px;
+}
+
+/* Login Modal */
+#login-modal {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(23, 26, 33, 0.85);
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.3s;
+}
+#login-modal.hidden {
+  display: none;
+}
+.login-box {
+  background: #23272e;
+  border-radius: 12px;
+  padding: 36px 40px;
+  min-width: 320px;
+  box-shadow: 0 8px 32px #000a;
+  position: relative;
+  animation: fadeIn 0.5s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.login-box h2 {
+  color: #66c0f4;
+  margin-bottom: 18px;
+}
+.login-box input {
+  width: 100%;
+  margin-bottom: 14px;
+}
+.login-box button {
+  width: 100%;
+}
+.error-msg {
+  color: #e74c3c;
+  margin-top: 10px;
+  font-size: 1rem;
+  text-align: center;
+}
+
+/* Owners/User Management */
+#owners-content {
+  margin-top: 18px;
+}
+#owners-content .user-list {
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+#owners-content .user-card {
+  background: #23272e;
+  border-radius: 8px;
+  padding: 12px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 2px 8px #0004;
+}
+#owners-content .user-role {
+  color: #66c0f4;
+  font-size: 0.95rem;
+  margin-left: 10px;
+}
+#owners-content .add-user-btn {
+  background: #66c0f4;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 14px;
+  font-size: 1rem;
+  margin-top: 10px;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+}
+#owners-content .add-user-btn:hover {
+  background: #2980b9;
+  transform: scale(1.05);
+}
+
+/* History List */
+#history-list {
+  margin-top: 18px;
+}
+#history-list .history-card {
+  background: #23272e;
+  border-radius: 8px;
+  padding: 14px 20px;
+  margin-bottom: 10px;
+  box-shadow: 0 2px 8px #0004;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+#history-list .history-action {
+  color: #66c0f4;
+  font-weight: 700;
+}
+#history-list .history-user {
+  color: #e67e22;
+  font-size: 0.95rem;
+}
+#history-list .history-date {
+  color: #aaa;
+  font-size: 0.9rem;
+  align-self: flex-end;
+}
+body.light-mode {
+  --bg: #f5f7fa;
+  --bg2: #e3e9f0;
+  --header: #eaf1fb;
+  --tab: #dbe6f6;
+  --tab-active: #b6c9e2;
+  --text: #222;
+  --accent: #0078d7;
+  --danger: #d7263d;
+  --success: #27ae60;
+}
+body.dark-mode {
+  --bg: #181a21;
+  --bg2: #23262e;
+  --header: #23262e;
+  --tab: #23262e;
+  --tab-active: #2a2d36;
+  --text: #fff;
+  --accent: #66c0f4;
+  --danger: #d7263d;
+  --success: #27ae60;
+}
+body.light-mode, body.dark-mode {
+  background: var(--bg);
+  color: var(--text);
+  transition: background 0.3s, color 0.3s;
+}
+.mode-toggle {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 1000;
+  background: var(--tab-active);
+  color: var(--text);
+  border: none;
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  font-size: 1.5rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.3s, color 0.3s;
+}
+.mode-toggle:hover {
+  background: var(--accent);
+  color: #fff;
+}
+
+#modal-close:hover {
+  color: #e74c3c;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  background: #23272e;
+}
+::-webkit-scrollbar-thumb {
+  background: #1b2838;
+  border-radius: 6px;
+}
+
+/* Login Modal */
+#login-modal {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(23, 26, 33, 0.85);
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.3s;
+}
+#login-modal.hidden {
+  display: none;
+}
+.login-box {
+  background: #23272e;
+  border-radius: 12px;
+  padding: 36px 40px;
+  min-width: 320px;
+  box-shadow: 0 8px 32px #000a;
+  position: relative;
+  animation: fadeIn 0.5s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.login-box h2 {
+  color: #66c0f4;
+  margin-bottom: 18px;
+}
+.login-box input {
+  width: 100%;
+  margin-bottom: 14px;
+}
+.login-box button {
+  width: 100%;
+}
+.error-msg {
+  color: #e74c3c;
+  margin-top: 10px;
+  font-size: 1rem;
+  text-align: center;
+}
+
+/* Owners/User Management */
+#owners-content {
+  margin-top: 18px;
+}
+#owners-content .user-list {
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+#owners-content .user-card {
+  background: #23272e;
+  border-radius: 8px;
+  padding: 12px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 2px 8px #0004;
+}
+#owners-content .user-role {
+  color: #66c0f4;
+  font-size: 0.95rem;
+  margin-left: 10px;
+}
+#owners-content .add-user-btn {
+  background: #66c0f4;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 14px;
+  font-size: 1rem;
+  margin-top: 10px;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+}
+#owners-content .add-user-btn:hover {
+  background: #2980b9;
+  transform: scale(1.05);
+}
+
+/* History List */
+#history-list {
+  margin-top: 18px;
+}
+#history-list .history-card {
+  background: #23272e;
+  border-radius: 8px;
+  padding: 14px 20px;
+  margin-bottom: 10px;
+  box-shadow: 0 2px 8px #0004;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+#history-list .history-action {
+  color: #66c0f4;
+  font-weight: 700;
+}
+#history-list .history-user {
+  color: #e67e22;
+  font-size: 0.95rem;
+}
+#history-list .history-date {
+  color: #aaa;
+  font-size: 0.9rem;
+  align-self: flex-end;
+}
