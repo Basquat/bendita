@@ -33,10 +33,13 @@ modalBg.onclick = e => { if (e.target === modalBg) modalBg.classList.add('hidden
 async function renderLowStock() {
   const list = document.getElementById('low-stock-list');
   list.innerHTML = '';
-  let items = [];
-  // Aqui você pode buscar os itens do backend ou usar localStorage
-  items = inventory;
-  const lowItems = items.filter(item => item.quantidade <= 5);
+  await fetchInventory();
+  let items = inventory;
+  const lowItems = items.filter(item => {
+    if (item.disableLowStock) return false;
+    const threshold = item.lowStockThreshold != null ? item.lowStockThreshold : LOW_STOCK_THRESHOLD;
+    return item.quantidade <= threshold;
+  });
   if (lowItems.length === 0) {
     list.innerHTML = '<p>Todos os itens estão com estoque suficiente!</p>';
     return;
@@ -55,9 +58,46 @@ async function renderLowStock() {
   });
 }
 
+import { addClass, removeClass, createElement, clearChildren } from './dom-utils.js';
 async function renderEditList() {
   const list = document.getElementById('edit-list');
-  list.innerHTML = '';
+  clearChildren(list);
+  // Campo de pesquisa
+  let searchDiv = document.getElementById('edit-search-div');
+  if (!searchDiv) {
+    searchDiv = document.createElement('div');
+    searchDiv.id = 'edit-search-div';
+    searchDiv.innerHTML = '<input type="text" id="edit-search" placeholder="Pesquisar item...">';
+    list.parentNode.insertBefore(searchDiv, list);
+  }
+  const searchInput = document.getElementById('edit-search');
+  let searchTerm = searchInput ? searchInput.value.toLowerCase() : '';
+  let filtered = inventory;
+  if (searchTerm) {
+    filtered = inventory.filter(item => item.nome.toLowerCase().includes(searchTerm) || item.categoria.toLowerCase().includes(searchTerm));
+  }
+  if (filtered.length === 0) {
+    list.innerHTML = '<p>Nenhum item encontrado.</p>';
+    return;
+  }
+  filtered.forEach(item => {
+    const card = createElement('div', { className: 'item-card' });
+    card.innerHTML = `
+      <div class="item-info">
+        <span class="item-name">${item.nome}</span>
+        <span class="item-category">${item.categoria}</span>
+      </div>
+      <span class="item-quantity">Qtd: ${item.quantidade}</span>
+      <button class="edit-btn" onclick="openEditModal('${item._id}')">Editar</button>
+      <button class="delete-btn" onclick="deleteItem('${item._id}')">Excluir</button>
+    `;
+    list.appendChild(card);
+    highlightSearchResult(card);
+  });
+  if (searchInput) {
+    searchInput.oninput = renderEditList;
+  }
+}
   let items = inventory;
   if (items.length === 0) {
     list.innerHTML = '<p>Nenhum item cadastrado.</p>';
@@ -81,22 +121,39 @@ async function renderEditList() {
     card.querySelector('.delete-btn').onclick = () => deleteItem(idx);
     list.appendChild(card);
   });
-}
+
 
 const addForm = document.getElementById('add-item-form');
+addForm.innerHTML += `
+  <input type="number" name="lowStockThreshold" placeholder="Estoque baixo personalizado (opcional)" min="1">
+  <label><input type="checkbox" name="disableLowStock"> Não alertar estoque baixo para este item</label>
+`;
 addForm.onsubmit = async function(e) {
   e.preventDefault();
   const formData = new FormData(addForm);
   const newItem = {
     nome: formData.get('name'),
     categoria: formData.get('category'),
-    quantidade: parseInt(formData.get('quantity'))
+    quantidade: parseInt(formData.get('quantity')),
+    lowStockThreshold: formData.get('lowStockThreshold') ? parseInt(formData.get('lowStockThreshold')) : null,
+    disableLowStock: formData.get('disableLowStock') ? true : false
   };
-  inventory.push(newItem);
-  localStorage.setItem('bendita_inventory', JSON.stringify(inventory));
-  addForm.reset();
-  await renderAll();
-  showModal('<h2>Item adicionado com sucesso!</h2>');
+  const token = localStorage.getItem('bendita_token');
+  const res = await fetch('http://localhost:3000/api/estoque', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + token
+    },
+    body: JSON.stringify(newItem)
+  });
+  if (res.ok) {
+    addForm.reset();
+    await renderAll();
+    showModal('<h2>Item adicionado com sucesso!</h2>');
+  } else {
+    showModal('<h2>Erro ao adicionar item!</h2>');
+  }
 };
 
 function openEditModal(item, idx) {
@@ -178,7 +235,35 @@ async function renderOwners() {
 // History (placeholder)
 async function renderHistory() {
   const historyList = document.getElementById('history-list');
-  historyList.innerHTML = '<p>Funcionalidade de histórico em breve.</p>';
+  historyList.innerHTML = '<p>Carregando histórico...</p>';
+  const token = localStorage.getItem('bendita_token');
+  try {
+    const res = await fetch('http://localhost:3000/api/historico', {
+      headers: { 'Authorization': 'Bearer ' + token }
+    });
+    if (res.ok) {
+      const history = await res.json();
+      if (history.length === 0) {
+        historyList.innerHTML = '<p>Nenhuma alteração registrada ainda.</p>';
+        return;
+      }
+      historyList.innerHTML = '';
+      history.forEach(entry => {
+        const item = document.createElement('div');
+        item.className = 'history-entry';
+        item.innerHTML = `
+          <strong>${entry.usuario_nome || 'Usuário'}</strong> ${entry.acao}<br>
+          <span>${entry.detalhes}</span><br>
+          <small>${new Date(entry.data).toLocaleString()}</small>
+        `;
+        historyList.appendChild(item);
+      });
+    } else {
+      historyList.innerHTML = '<p>Erro ao carregar histórico.</p>';
+    }
+  } catch {
+    historyList.innerHTML = '<p>Erro ao conectar ao servidor.</p>';
+  }
 }
 
 // Tab switching with render
@@ -210,4 +295,11 @@ tabs.forEach(tab => {
 window.onload = async () => {
   await renderAll();
 };
+
+
+// Exemplo de uso: adicionar destaque ao pesquisar item
+function highlightSearchResult(card) {
+  addClass(card, 'highlight');
+  setTimeout(() => removeClass(card, 'highlight'), 800);
+}
 
