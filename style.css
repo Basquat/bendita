@@ -290,7 +290,7 @@ form button:hover {
   text-align: center;
 }
 
-/* Owners/User Management */
+
 #owners-content {
   margin-top: 18px;
 }
@@ -330,7 +330,7 @@ form button:hover {
   transform: scale(1.05);
 }
 
-/* History List */
+
 #history-list {
   margin-top: 18px;
 }
@@ -421,7 +421,7 @@ body.light-mode, body.dark-mode {
   border-radius: 6px;
 }
 
-/* Login Modal */
+
 #login-modal {
   position: fixed;
   top: 0; left: 0; right: 0; bottom: 0;
@@ -465,7 +465,7 @@ body.light-mode, body.dark-mode {
   text-align: center;
 }
 
-/* Owners/User Management */
+
 #owners-content {
   margin-top: 18px;
 }
@@ -505,7 +505,7 @@ body.light-mode, body.dark-mode {
   transform: scale(1.05);
 }
 
-/* History List */
+
 #history-list {
   margin-top: 18px;
 }

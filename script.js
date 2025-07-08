@@ -29,7 +29,7 @@ async function handleSubmit(event) {
     }
 }
 
-// Remover alternância de tema
+
 document.getElementById('toggle-mode').addEventListener('click', function () {
     document.body.classList.toggle('light-mode');
     const elements = document.querySelectorAll('.login-box, h1, label, .message, button');

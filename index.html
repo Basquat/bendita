@@ -20,6 +20,7 @@
         <li class="tab" data-tab="edit">Editar Item</li>
         <li class="tab" data-tab="owners">Gerenciar Usuários</li>
         <li class="tab" data-tab="history">Histórico</li>
+        <li class="tab" data-tab="suporte">Suporte</li>
       </ul>
     </nav>
   </header>
@@ -34,6 +35,8 @@
         <input type="text" placeholder="Nome do Item" name="name" required>
         <input type="number" placeholder="Quantidade" name="quantity" min="1" required>
         <input type="text" placeholder="Categoria" name="category" required>
+        <input type="number" placeholder="Estoque baixo para este item (opcional)" name="lowstock" min="0">
+        <label style="display:block;margin:5px 0 10px 0;font-size:0.95em"><input type="checkbox" name="disablelowstock"> Não alertar estoque baixo para este item</label>
         <button type="submit">Adicionar</button>
       </form>
     </section>
@@ -49,6 +52,52 @@
       <h1>Histórico de Alterações</h1>
       <div id="history-list" class="item-list"></div>
     </section>
+    <section id="suporte" class="tab-content">
+      <h1>Suporte Interno - Bendita Trufa</h1>
+      <p>Formulário exclusivo para funcionários</p>
+      <form id="suporteForm">
+        <label for="nome">Nome completo:</label>
+        <input type="text" id="nome" name="nome" required>
+        <label for="email">Email corporativo:</label>
+        <input type="email" id="email" name="email" required>
+        <label for="departamento">Departamento:</label>
+        <select id="departamento" name="departamento" required>
+          <option value="">Selecione</option>
+          <option value="vendas">Vendas</option>
+          <option value="estoque">Estoque</option>
+          <option value="caixa">Caixa</option>
+          <option value="adm">Administrativo</option>
+          <option value="outro">Outro</option>
+        </select>
+        <label for="turno">Turno de trabalho (Matutino, Vespertino ou Noturno):</label>
+        <input type="text" id="turno" name="turno" pattern="matutino|vespertino|noturno" title="Informe apenas: matutino, vespertino ou noturno" required>
+        <label for="tipo">Tipo de Feedback:</label>
+        <select id="tipo" name="tipo" required>
+          <option value="">Escolha uma opção</option>
+          <option value="problema">Relatar Problema</option>
+          <option value="sugestao">Sugerir Melhoria</option>
+          <option value="elogio">Elogio</option>
+        </select>
+        <label for="descricao">Descrição detalhada:</label>
+        <textarea id="descricao" name="descricao" rows="5" required></textarea>
+        <label for="urgencia">Nível de urgência:</label>
+        <select id="urgencia" name="urgencia" required>
+          <option value="">Selecione</option>
+          <option value="baixa">Baixa</option>
+          <option value="media">Média</option>
+          <option value="alta">Alta</option>
+          <option value="critica">Crítica</option>
+        </select>
+        <label for="data">Data do ocorrido:</label>
+        <input type="date" id="data" name="data" required>
+        <label for="contato">Telefone para retorno:</label>
+        <input type="tel" id="contato" name="contato" required>
+        <button type="submit">Enviar</button>
+      </form>
+      <h2>Contato da Administração</h2>
+      <p>Email: suporte@benditatrufa.com</p>
+      <p>Ramal: 1234 | WhatsApp Corporativo: (71) 95555-6666</p>
+    </section>
   </main>
   <div id="modal-bg" class="hidden">
     <div id="modal">
@@ -56,6 +105,8 @@
       <div id="modal-content"></div>
     </div>
   </div>
-  <script src="app.js"></script>
+  <script type="module" src="app.js"></script>
 </body>
 </html>
+<link rel="stylesheet" href="estilo.css">
+<script src="scripto.js"></script>
