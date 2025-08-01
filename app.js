@@ -301,11 +301,25 @@ if (modalBg) {
 
 // *** INICIA O APLICATIVO ***
 // Certifique-se de chamar essa função quando o DOM estiver completamente carregado.
+// Listener para navegação por abas
+function setupTabs() {
+  const tabs = document.querySelectorAll('.tab');
+  const tabContents = document.querySelectorAll('.tab-content');
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      tabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      tabContents.forEach(tc => tc.classList.remove('active'));
+      document.getElementById(tab.dataset.tab).classList.add('active');
+    });
+  });
+}
+
 document.addEventListener('DOMContentLoaded', async () => {
-    console.log("DOM carregado. Iniciando fetch inicial...");
-    await fetchInventory(); // Carrega o inventário inicial
-    renderAll(); // Renderiza a interface
-    renderHistory(); // Configura o listener do histórico
+  setupTabs();
+  await fetchInventory();
+  renderAll();
+  renderHistory();
 });
 
 // Exemplo de como você adicionaria um novo item (se tivesse um formulário de adição)
